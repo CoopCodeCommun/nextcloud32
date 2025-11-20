@@ -5,3 +5,5 @@ POSTGRES_HOST=
 DOMAIN=
 NEXTCLOUD_TRUSTED_DOMAINS=
 JWT_SECRET=
+
+ROUTER_NAME= # for router in label in case of multiple instance
