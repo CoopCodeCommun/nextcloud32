@@ -43,6 +43,7 @@ docker compose exec --user www-data nextcloud_app php occ db:add-missing-indices
 docker compose exec --user www-data nextcloud_app php occ maintenance:repair --include-expensive
 docker compose exec --user www-data nextcloud_app php occ config:system:set maintenance_window_start --type=integer --value=1
 docker compose exec --user www-data nextcloud_app php occ config:system:set default_phone_region --value=“FR”
+docker compose exec --user www-data nextcloud_app php occ app:disable app_api 
 ```
 
 ### Crontab 
