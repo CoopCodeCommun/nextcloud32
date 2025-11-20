@@ -5,8 +5,8 @@ Installation nextcloud derrière Traefik v3 via docker compose
 Brouillons de note de blog : https://codimd.communecter.org/s/QicjJT2X7
 
 Les exemples ici sont avec les dns suivants :
-- nuage.lamiete.fr
-- onlyoffice.lamiete.fr
+- nuage.example.com
+- onlyoffice.example.com
 
 A changer bien sur avec vos propres adresses :)
 
@@ -20,12 +20,12 @@ A changer bien sur avec vos propres adresses :)
       array (                  
         1 => '172.18.0.0/24',                                       
       ),                                                            
-  'overwritehost'     => 'nuage.lamiete.fr',
+  'overwritehost'     => 'nuage.codecommun.coop',
   'overwriteprotocol' => 'https',
-  'overwrite.cli.url' => 'https://nuage.lamiete.fr',
+  'overwrite.cli.url' => 'https://nuage.codecommun.coop',
   'trusted_domains' => 
       array (
-        0 => 'nuage.lamiete.fr',
+        0 => 'nuage.codecommun.coop',
       ),
   'memcache.locking' => '\OC\Memcache\Redis',
   'redis' => 
