@@ -32,18 +32,18 @@ services:
       - "traefik.docker.network=frontend"
       - "traefik.http.routers.nextcloud_$ROUTER_NAME.tls.certresolver=myresolver"
       - "traefik.http.routers.nextcloud_$ROUTER_NAME.rule=Host(`nuage.$DOMAIN`)"
-      - "traefik.http.services.nextcloud-$ROUTER_NAME.loadbalancer.server.port=80"
+      - "traefik.http.services.nextcloud_$ROUTER_NAME.loadbalancer.server.port=80"
 
-      - "traefik.http.routers.nextcloud-$ROUTER_NAME.middlewares=nextcloud_custom_header, nextcloud_redirectregex, crowdsec@file"
+      - "traefik.http.routers.nextcloud_$ROUTER_NAME.middlewares=nextcloud_custom_header, nextcloud_redirectregex, crowdsec@file"
 
         # Pour le chargement de scripts extérieurs, ex : onlyoffice
-      - "traefik.http.middlewares.nextcloud_$ROUTER_NAME_custom_header.headers.customResponseHeaders.Strict-Transport-Security=max-age=15552000; includeSubDomains; preload;"
-      - "traefik.http.middlewares.nextcloud_$ROUTER_NAME_custom_header.headers.contentSecurityPolicy=frame-ancestors 'self' ${DOMAIN} onlyoffice.${DOMAIN} "
+      - "traefik.http.middlewares.nextcloud_custom_header_$ROUTER_NAME.headers.customResponseHeaders.Strict-Transport-Security=max-age=15552000; includeSubDomains; preload;"
+      - "traefik.http.middlewares.nextcloud_custom_header_$ROUTER_NAME.headers.contentSecurityPolicy=frame-ancestors 'self' ${DOMAIN} onlyoffice.${DOMAIN} "
 
         # redirection nécéssaire au desktop client et autres webdav
-      - "traefik.http.middlewares.nextcloud_$ROUTER_NAME_redirectregex.redirectregex.permanent=true"
-      - "traefik.http.middlewares.nextcloud_$ROUTER_NAME_redirectregex.redirectregex.regex=https://(.*)/.well-known/(?:card|cal)dav"
-      - "traefik.http.middlewares.nextcloud_$ROUTER_NAME_redirectregex.redirectregex.replacement=https://$${1}/remote.php/dav"
+      - "traefik.http.middlewares.nextcloud_redirectregex_$ROUTER_NAME.redirectregex.permanent=true"
+      - "traefik.http.middlewares.nextcloud_redirectregex_$ROUTER_NAME.redirectregex.regex=https://(.*)/.well-known/(?:card|cal)dav"
+      - "traefik.http.middlewares.nextcloud_redirectregex_$ROUTER_NAME.redirectregex.replacement=https://$${1}/remote.php/dav"
 
 
 networks:
