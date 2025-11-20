@@ -1,0 +1,58 @@
+services:
+  nextcloud_db:
+    image: postgres:18
+    hostname: nextcloud_db
+    container_name: nextcloud_db
+    restart: always
+    volumes:               
+     - ./database:/var/lib/postgresql/data                   
+    env_file: .env   
+    networks:            
+      - nextcloud_db      
+
+  nextcloud_redis:
+    container_name: nextcloud_redis
+    hostname: nextcloud_redis
+    image: redis:7.4
+    restart: always
+    networks:
+      - nextcloud_db
+
+  nextcloud_app:  
+    container_name: nextcloud_app
+    hostname: nextcloud_app
+    image: nextcloud:32
+    restart: always
+    ports:
+      - 8090:80
+    depends_on:
+      - nextcloud_db
+    volumes:
+      - ./data/www/html:/var/www/html
+    networks:
+      - nextcloud_db
+      - frontend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=frontend"
+      - "traefik.http.routers.nextcloud.tls.certresolver=myresolver"
+      - "traefik.http.routers.nextcloud.rule=Host(`nuage.$DOMAIN`)"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+
+      - "traefik.http.routers.nextcloud.middlewares=nextcloud_custom_header, nextcloud_redirectregex, crowdsec@file"
+
+        # Pour le chargement de scripts extérieurs, ex : onlyoffice
+      - "traefik.http.middlewares.nextcloud_custom_header.headers.customResponseHeaders.Strict-Transport-Security=max-age=15552000; includeSubDomains; preload;"
+      - "traefik.http.middlewares.nextcloud_custom_header.headers.contentSecurityPolicy=frame-ancestors 'self' ${DOMAIN} onlyoffice.${DOMAIN} "
+
+        # redirection nécéssaire au desktop client et autres webdav
+      - "traefik.http.middlewares.nextcloud_redirectregex.redirectregex.permanent=true"
+      - "traefik.http.middlewares.nextcloud_redirectregex.redirectregex.regex=https://(.*)/.well-known/(?:card|cal)dav"
+      - "traefik.http.middlewares.nextcloud_redirectregex.redirectregex.replacement=https://$${1}/remote.php/dav"
+
+
+networks:
+  frontend:
+    external: true
+  nextcloud_db:
+    internal: true
