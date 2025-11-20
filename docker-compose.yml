@@ -30,7 +30,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=frontend"
-      - "traefik.http.routers.nextcloud-{$domain}.tls.certresolver=myresolver"
+      - "traefik.http.routers.nextcloud-{$DOMAIN}.tls.certresolver=myresolver"
       - "traefik.http.routers.nextcloud.rule=Host(`nuage.$DOMAIN`)"
       - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
 
