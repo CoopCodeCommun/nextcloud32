@@ -43,7 +43,7 @@ services:
       - "traefik.http.routers.onlyoffice_$ROUTER_NAME.middlewares=onlyoffice-https-redirect_$ROUTER_NAME"
       - "traefik.http.middlewares.onlyoffice-https-redirect_$ROUTER_NAME.redirectscheme.scheme=https"
 
-      - "traefik.http.routers.onlyoffice.middlewares=onlyoffice_custom_header_$ROUTER_NAME"
+      - "traefik.http.routers.onlyoffice_$ROUTER_NAME.middlewares=onlyoffice_custom_header_$ROUTER_NAME"
       - "traefik.http.middlewares.onlyoffice_custom_header_$ROUTER_NAME.headers.customResponseHeaders.Strict-Transport-Security=max-age=15552000; includeSubDomains; preload;"
       - "traefik.http.middlewares.onlyoffice_custom_header_$ROUTER_NAME.headers.referrerPolicy=no-referrer"
       - "traefik.http.middlewares.onlyoffice_custom_header_$ROUTER_NAME.headers.forceSTSHeader=true"
