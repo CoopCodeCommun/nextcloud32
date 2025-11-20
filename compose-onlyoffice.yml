@@ -1,9 +1,6 @@
 services:
   onlyoffice-documentserver:
     image: onlyoffice/documentserver:latest
-    # build:
-      # context: .
-    container_name: onlyoffice-documentserver
     depends_on:
       - onlyoffice-postgresql
       - onlyoffice-rabbitmq
@@ -19,9 +16,9 @@ services:
       #- JWT_SECRET=secret
       #- JWT_HEADER=Authorization
       #- JWT_IN_BODY=true
-    expose:
-      - '80'
-      - '443'
+    # expose:
+      # - '80'
+      # - '443'
     stdin_open: true
     restart: always
     stop_grace_period: 60s
@@ -36,27 +33,27 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=frontend"
-      - "traefik.http.routers.onlyoffice.tls.certresolver=myresolver"
-      - "traefik.http.routers.onlyoffice.rule=Host(`onlyoffice.$DOMAIN`)"
-      - "traefik.http.services.onlyoffice.loadbalancer.server.port=80"
+      - "traefik.http.routers.onlyoffice_$ROUTER_NAME.tls.certresolver=myresolver"
+      - "traefik.http.routers.onlyoffice_$ROUTER_NAME.rule=Host(`onlyoffice.$DOMAIN`)"
+      - "traefik.http.services.onlyoffice_$ROUTER_NAME.loadbalancer.server.port=80"
       
-      - "traefik.http.routers.onlyoffice.entrypoints=websecure"
-      - "traefik.http.routers.onlyoffice.middlewares=onlyoffice-https-redirect"
-      - "traefik.http.middlewares.onlyoffice-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.onlyoffice_$ROUTER_NAME.entrypoints=websecure"
+      - "traefik.http.routers.onlyoffice_$ROUTER_NAME.middlewares=onlyoffice-https-redirect_$ROUTER_NAME"
+      - "traefik.http.middlewares.onlyoffice-https-redirect_$ROUTER_NAME.redirectscheme.scheme=https"
 
-      - "traefik.http.routers.onlyoffice.middlewares=onlyoffice_custom_header"
-      - "traefik.http.middlewares.onlyoffice_custom_header.headers.customResponseHeaders.Strict-Transport-Security=max-age=15552000; includeSubDomains; preload;"
-      - "traefik.http.middlewares.onlyoffice_custom_header.headers.referrerPolicy=no-referrer"
-      - "traefik.http.middlewares.onlyoffice_custom_header.headers.forceSTSHeader=true"
-      - "traefik.http.middlewares.onlyoffice_custom_header.headers.browserXssFilter=true"
-      - "traefik.http.middlewares.onlyoffice_custom_header.headers.customRequestHeaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.onlyoffice.middlewares=onlyoffice_custom_header_$ROUTER_NAME"
+      - "traefik.http.middlewares.onlyoffice_custom_header_$ROUTER_NAME.headers.customResponseHeaders.Strict-Transport-Security=max-age=15552000; includeSubDomains; preload;"
+      - "traefik.http.middlewares.onlyoffice_custom_header_$ROUTER_NAME.headers.referrerPolicy=no-referrer"
+      - "traefik.http.middlewares.onlyoffice_custom_header_$ROUTER_NAME.headers.forceSTSHeader=true"
+      - "traefik.http.middlewares.onlyoffice_custom_header_$ROUTER_NAME.headers.browserXssFilter=true"
+      - "traefik.http.middlewares.onlyoffice_custom_header_$ROUTER_NAME.headers.customRequestHeaders.X-Forwarded-Proto=https"
        
   onlyoffice-rabbitmq:
     container_name: onlyoffice-rabbitmq
     image: rabbitmq
     restart: always
-    expose:
-      - '5672'
+    # expose:
+      # - '5672'
     networks:
       - frontend
 
@@ -68,8 +65,8 @@ services:
       - POSTGRES_USER=onlyoffice
       - POSTGRES_HOST_AUTH_METHOD=trust
     restart: always
-    expose:
-      - '5432'
+    # expose:
+      # - '5432'
     # volumes:
       # - postgresql_data:/var/lib/postgresql
     networks:
