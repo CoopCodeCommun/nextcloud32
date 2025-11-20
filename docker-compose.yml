@@ -1,6 +1,6 @@
 services:
   nextcloud_db:
-    image: postgres:18
+    image: postgres:17
     hostname: nextcloud_db
     restart: always
     volumes:               
