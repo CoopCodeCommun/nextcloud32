@@ -49,7 +49,6 @@ services:
       - "traefik.http.middlewares.onlyoffice_custom_header_$ROUTER_NAME.headers.customRequestHeaders.X-Forwarded-Proto=https"
        
   onlyoffice-rabbitmq:
-    container_name: onlyoffice-rabbitmq
     image: rabbitmq
     restart: always
     # expose:
@@ -58,7 +57,6 @@ services:
       - frontend
 
   onlyoffice-postgresql:
-    container_name: onlyoffice-postgresql
     image: postgres:12
     environment:
       - POSTGRES_DB=onlyoffice
