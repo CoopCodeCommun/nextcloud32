@@ -1,6 +1,6 @@
 services:
   onlyoffice-documentserver:
-    image: onlyoffice/documentserver:8.2
+    image: onlyoffice/documentserver:9.1
     depends_on:
       - onlyoffice-postgresql
       - onlyoffice-rabbitmq
