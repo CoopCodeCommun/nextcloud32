@@ -31,7 +31,9 @@ services:
     networks:
       - frontend
       - onlyoffice
-
+    extra_hosts:
+      - "nuage.$DOMAIN:172.18.0.1"  # adapter l'IP à ton réseau docker
+      - "onlyoffice.$DOMAIN:172.18.0.1"  # adapter l'IP à ton réseau docker
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=frontend"
